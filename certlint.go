@@ -49,6 +49,7 @@ type testResult struct {
 var jobs = make(chan []byte, 100)
 var results = make(chan testResult, 100)
 var count int64
+var running int
 
 func main() {
 	var cert = flag.String("cert", "", "Certificate file")
@@ -85,12 +86,13 @@ func main() {
 
 	// Start the bulk checking logic to parse a pem file with more certificates and
 	// save the results to a csv file.
+	running = 0
 	if len(*bulk) > 0 {
 		for i := 1; i <= runtime.NumCPU(); i++ {
 			go runBulk(*expired)
 		}
-		go saveResults(*report, *include, *revoked)
-		doBulk(*bulk)
+		go doBulk(*bulk)
+		saveResults(*report, *include, *revoked)
 		return
 	}
 
@@ -204,7 +206,6 @@ func do(icaCache *lru.Cache, der []byte, issuer *string, exp, rtrn bool) testRes
 
 		if !result.Trusted {
 			result.Errors.Err("Failed to verify chain for %s", d.Cert.Issuer.CommonName)
-			return result
 		}
 
 		if d.Issuer == nil {
@@ -215,11 +216,14 @@ func do(icaCache *lru.Cache, der []byte, issuer *string, exp, rtrn bool) testRes
 		result.Errors.Append(checks.Certificate.Check(d))
 	}
 
+	if len(result.Errors.List(errors.Notice, errors.Warning, errors.Error, errors.Alert, errors.Critical, errors.Emergency)) == 0 {
+		result.Errors.Info("This Certificate is acceptable")
+	}
+
 	// In batch mode we want to queue results
 	if !rtrn && len(result.Errors.List()) > 0 {
 		results <- result
 	}
-
 	return result
 }
 
@@ -272,8 +276,8 @@ func doBulk(bulk string) {
 }
 
 func runBulk(exp bool) {
+	running+=1
 	var icaCache = lru.New(200)
-
 	for {
 		der, more := <-jobs
 		if more {
@@ -282,6 +286,7 @@ func runBulk(exp bool) {
 			break
 		}
 	}
+	running -=1
 }
 
 func saveResults(filename string, include, revoked bool) error {
@@ -294,8 +299,9 @@ func saveResults(filename string, include, revoked bool) error {
 
 	writer := csv.NewWriter(file)
 	writer.UseCRLF = true
-	writer.Write([]string{"Issuer", "CN", "O", "Serial", "NotBefore", "NotAfter", "Type", "Error", "Revoked", "Cert"})
+	writer.Write([]string{"Number","Issuer", "CN", "O", "Serial", "NotBefore", "NotAfter", "Type", "Error", "Revoked", "Cert"})
 	writer.Flush()
+	counter := 0
 
 	for {
 		r, more := <-results
@@ -304,6 +310,7 @@ func saveResults(filename string, include, revoked bool) error {
 				var columns []string
 				if r.Cert != nil {
 					columns = []string{
+						fmt.Sprintf("%d",counter),
 						fmt.Sprintf("%s, %s", r.Cert.Issuer.CommonName, r.Cert.Issuer.Organization),
 						r.Cert.Subject.CommonName,
 						strings.Join(r.Cert.Subject.Organization, ", "),
@@ -311,10 +318,10 @@ func saveResults(filename string, include, revoked bool) error {
 						r.Cert.NotBefore.Format("2006-01-02"),
 						r.Cert.NotAfter.Format("2006-01-02"),
 						r.Type,
-						e.Error(),
+						fmt.Sprintf("%s: %s", e.Priority().String(), e.Error()),
 					}
 
-					// Check if certificate is revoked when idicated
+					// Check if certificate is revoked when indicated
 					if revoked {
 						if isRevoked, ok := revoke.VerifyCertificate(r.Cert); ok {
 							columns = append(columns, fmt.Sprintf("%t", isRevoked))
@@ -347,6 +354,8 @@ func saveResults(filename string, include, revoked bool) error {
 
 				writer.Flush()
 			}
+			counter++
+			if running == 0 { close(results)}
 		} else {
 			break
 		}
