@@ -299,7 +299,7 @@ func saveResults(filename string, include, revoked bool) error {
 
 	writer := csv.NewWriter(file)
 	writer.UseCRLF = true
-	writer.Write([]string{"Number","Issuer", "CN", "O", "Serial", "NotBefore", "NotAfter", "Type", "Error", "Revoked", "Cert"})
+	writer.Write([]string{"Number","Issuer", "CN", "O", "Serial", "NotBefore", "NotAfter", "Type", "Severity", "Error", "Revoked", "Cert"})
 	writer.Flush()
 	counter := 0
 
@@ -318,7 +318,8 @@ func saveResults(filename string, include, revoked bool) error {
 						r.Cert.NotBefore.Format("2006-01-02"),
 						r.Cert.NotAfter.Format("2006-01-02"),
 						r.Type,
-						fmt.Sprintf("%s: %s", e.Priority().String(), e.Error()),
+						strings.ToUpper(e.Priority().String()),
+						e.Error(),
 					}
 
 					// Check if certificate is revoked when indicated
@@ -343,7 +344,7 @@ func saveResults(filename string, include, revoked bool) error {
 					}
 
 				} else {
-					columns = []string{"", "", "", "", "", "", "", e.Error(), "", r.Pem}
+					columns = []string{"", "", "", "", "", "", "", "",strings.ToUpper(e.Priority().String()), e.Error(), "", r.Pem}
 				}
 
 				err := writer.Write(columns)
