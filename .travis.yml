@@ -17,6 +17,6 @@ after_success:
 notifications:
   email:
     recipients:
-    - paul.vanbrouwershaven@globalsign.com
+    - oliver@weyhmueller.de
     on_success: never
     on_failure: change
