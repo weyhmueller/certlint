@@ -1,9 +1,9 @@
 # certlint
 
-[![Build Status](https://travis-ci.org/globalsign/certlint.svg?branch=master)](https://travis-ci.org/globalsign/certlint)
-[![Go Report Card](https://goreportcard.com/badge/github.com/globalsign/certlint)](https://goreportcard.com/report/github.com/globalsign/certlint)
-[![Coverage Status](http://codecov.io/github/globalsign/certlint/coverage.svg?branch=master)](http://codecov.io/github.com/globalsign/certlint?branch=master)
-[![GoDoc](https://godoc.org/github.com/globalsign/certlint?status.svg)](https://godoc.org/github.com/globalsign/certlint)
+[![Build Status](https://travis-ci.org/weyhmueller/certlint.svg?branch=master)](https://travis-ci.org/weyhmueller/certlint)
+[![Go Report Card](https://goreportcard.com/badge/github.com/weyhmueller/certlint)](https://goreportcard.com/report/github.com/weyhmueller/certlint)
+[![Coverage Status](http://codecov.io/github/weyhmueller/certlint/coverage.svg?branch=master)](http://codecov.io/github.com/weyhmueller/certlint?branch=master)
+[![GoDoc](https://godoc.org/github.com/weyhmueller/certlint?status.svg)](https://godoc.org/github.com/weyhmueller/certlint)
 
 X.509 certificate linter written in Go
 
