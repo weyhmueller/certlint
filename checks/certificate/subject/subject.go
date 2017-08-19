@@ -57,11 +57,11 @@ func checkDN(vetting string, dn []pkix.AttributeTypeAndValue) *errors.Errors {
 		// commonName
 		// If present, this field MUST contain a single IP address or Fully‐Qualified Domain Name
 		case n.Type.Equal(commonName):
-			// report deprecated common name field as info untill not commenly used/accepted
+			// report deprecated common name field as info until not commonly used/accepted
 			e.Info("commonName field is deprecated")
 
 		case n.Type.Equal(emailAddress):
-			// report deprecated email address field as info untill not commenly used/accepted
+			// report deprecated email address field as info until not commonly used/accepted
 			e.Info("emailAddress field is deprecated")
 
 		// surname
