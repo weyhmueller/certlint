@@ -5,7 +5,7 @@
 [![Coverage Status](http://codecov.io/github/weyhmueller/certlint/coverage.svg?branch=master)](http://codecov.io/github.com/weyhmueller/certlint?branch=master)
 [![GoDoc](https://godoc.org/github.com/weyhmueller/certlint?status.svg)](https://godoc.org/github.com/weyhmueller/certlint)
 
-X.509 certificate linter written in Go
+X.509 certificate linter written in Go. Originally developed by Globalsign.
 
 #### General
 This package is a work in progress.
@@ -21,8 +21,8 @@ Code contributions and tests are highly welcome!
 
 To install from source, just run:
 ```bash
-go get -u github.com/globalsign/certlint
-go install github.com/globalsign/certlint
+go get -u github.com/weyhmueller/certlint
+go install github.com/weyhmueller/certlint
 ```
 
 #### CLI: Usage
@@ -69,26 +69,26 @@ $ certlinter -expired -bulk largestore.pem
 Import one or all of these packages:
 
 ```go
-import "github.com/globalsign/certlint/asn1"
-import "github.com/globalsign/certlint/certdata"
-import "github.com/globalsign/certlint/checks"
+import "github.com/weyhmueller/certlint/asn1"
+import "github.com/weyhmueller/certlint/certdata"
+import "github.com/weyhmueller/certlint/checks"
 ```
 
 You can import all available checks:
 ```go
-_ "github.com/globalsign/certlint/checks/extensions/all"
-_ "github.com/globalsign/certlint/checks/certificate/all"
+_ "github.com/weyhmueller/certlint/checks/extensions/all"
+_ "github.com/weyhmueller/certlint/checks/certificate/all"
 ```
 
 Or you can just import a restricted set:
 ```go
 // Check for certificate (ext) KeyUsage extension
-_ "github.com/globalsign/certlint/checks/extensions/extkeyusage"
-_ "github.com/globalsign/certlint/checks/extensions/keyusage"
+_ "github.com/weyhmueller/certlint/checks/extensions/extkeyusage"
+_ "github.com/weyhmueller/certlint/checks/extensions/keyusage"
 
 // Also check the parsed certificate (ext) keyusage content
-_ "github.com/globalsign/certlint/checks/certificate/extkeyusage"
-_ "github.com/globalsign/certlint/checks/certificate/keyusage"
+_ "github.com/weyhmueller/certlint/checks/certificate/extkeyusage"
+_ "github.com/weyhmueller/certlint/checks/certificate/keyusage"
 ```
 
 ##### API: Check ASN.1 value formatting
