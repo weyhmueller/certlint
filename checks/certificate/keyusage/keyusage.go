@@ -6,9 +6,9 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 
-	"github.com/globalsign/certlint/certdata"
-	"github.com/globalsign/certlint/checks"
-	"github.com/globalsign/certlint/errors"
+	"github.com/weyhmueller/certlint/certdata"
+	"github.com/weyhmueller/certlint/checks"
+	"github.com/weyhmueller/certlint/errors"
 )
 
 const checkName = "Key Usage Check"

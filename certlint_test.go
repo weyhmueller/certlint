@@ -6,9 +6,9 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/globalsign/certlint/asn1"
-	"github.com/globalsign/certlint/certdata"
-	"github.com/globalsign/certlint/checks"
+	"github.com/weyhmueller/certlint/asn1"
+	"github.com/weyhmueller/certlint/certdata"
+	"github.com/weyhmueller/certlint/checks"
 	"github.com/golang/groupcache/lru"
 )
 

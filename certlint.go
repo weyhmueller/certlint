@@ -21,14 +21,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/globalsign/certlint/asn1"
-	"github.com/globalsign/certlint/certdata"
-	"github.com/globalsign/certlint/checks"
-	"github.com/globalsign/certlint/errors"
+	"github.com/weyhmueller/certlint/asn1"
+	"github.com/weyhmueller/certlint/certdata"
+	"github.com/weyhmueller/certlint/checks"
+	"github.com/weyhmueller/certlint/errors"
 
 	// Import all available checks
-	_ "github.com/globalsign/certlint/checks/certificate/all"
-	_ "github.com/globalsign/certlint/checks/extensions/all"
+	_ "github.com/weyhmueller/certlint/checks/certificate/all"
+	_ "github.com/weyhmueller/certlint/checks/extensions/all"
 
 	"github.com/cloudflare/cfssl/log"
 	"github.com/cloudflare/cfssl/revoke"

@@ -3,18 +3,18 @@ package main
 import (
 	"fmt"
 
-	"github.com/globalsign/certlint/asn1"
-	"github.com/globalsign/certlint/certdata"
-	"github.com/globalsign/certlint/checks"
-	"github.com/globalsign/certlint/errors"
+	"github.com/weyhmueller/certlint/asn1"
+	"github.com/weyhmueller/certlint/certdata"
+	"github.com/weyhmueller/certlint/checks"
+	"github.com/weyhmueller/certlint/errors"
 
 	// Check for certificate (ext) KeyUsage extension
-	_ "github.com/globalsign/certlint/checks/extensions/extkeyusage"
-	_ "github.com/globalsign/certlint/checks/extensions/keyusage"
+	_ "github.com/weyhmueller/certlint/checks/extensions/extkeyusage"
+	_ "github.com/weyhmueller/certlint/checks/extensions/keyusage"
 
 	// Also check the parsed certificate (ext) keyusage content
-	_ "github.com/globalsign/certlint/checks/certificate/extkeyusage"
-	_ "github.com/globalsign/certlint/checks/certificate/keyusage"
+	_ "github.com/weyhmueller/certlint/checks/certificate/extkeyusage"
+	_ "github.com/weyhmueller/certlint/checks/certificate/keyusage"
 )
 
 func main() {

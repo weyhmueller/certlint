@@ -3,10 +3,10 @@ package publickey
 import (
 	"strings"
 
-	"github.com/globalsign/certlint/certdata"
-	"github.com/globalsign/certlint/checks"
-	"github.com/globalsign/certlint/checks/certificate/publickey/goodkey"
-	"github.com/globalsign/certlint/errors"
+	"github.com/weyhmueller/certlint/certdata"
+	"github.com/weyhmueller/certlint/checks"
+	"github.com/weyhmueller/certlint/checks/certificate/publickey/goodkey"
+	"github.com/weyhmueller/certlint/errors"
 )
 
 const checkName = "Public Key Check"

@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/globalsign/certlint/asn1"
-	"github.com/globalsign/certlint/certdata"
-	"github.com/globalsign/certlint/checks"
-	"github.com/globalsign/certlint/errors"
+	"github.com/weyhmueller/certlint/asn1"
+	"github.com/weyhmueller/certlint/certdata"
+	"github.com/weyhmueller/certlint/checks"
+	"github.com/weyhmueller/certlint/errors"
 
-	_ "github.com/globalsign/certlint/checks/certificate/all"
-	_ "github.com/globalsign/certlint/checks/extensions/all"
+	_ "github.com/weyhmueller/certlint/checks/certificate/all"
+	_ "github.com/weyhmueller/certlint/checks/extensions/all"
 
 	ct "github.com/google/certificate-transparency-go"
 	"github.com/google/certificate-transparency-go/client"
