@@ -94,18 +94,19 @@ func main() {
 		go doBulk(*bulk)
 		saveResults(*report, *include, *revoked)
 		return
-	}
+	} else {
 
-	// Check one certificate and print results on screen
-	der := getCertificate(*cert)
-	result := do(nil, der, issuer, *expired, true)
+	    // Check one certificate and print results on screen
+	    der := getCertificate(*cert)
+	    result := do(nil, der, issuer, *expired, true)
 
-	fmt.Println("Certificate Type:", result.Type)
-	if result.Errors != nil {
-		for _, err := range result.Errors.List() {
-			fmt.Println(err)
-		}
-	}
+	    fmt.Println("Certificate Type:", result.Type)
+	    if result.Errors != nil {
+	  	    for _, err := range result.Errors.List() {
+			    fmt.Println(err)
+		    }
+	    }
+    }
 }
 
 // do performs the checks on the der encoding and the actual certificate, if exp
@@ -287,6 +288,7 @@ func runBulk(exp bool) {
 		}
 	}
 	running -=1
+	if running == 0 {close(results)}
 }
 
 func saveResults(filename string, include, revoked bool) error {
@@ -324,10 +326,21 @@ func saveResults(filename string, include, revoked bool) error {
 
 					// Check if certificate is revoked when indicated
 					if revoked {
+						//running +=1
 						if isRevoked, ok := revoke.VerifyCertificate(r.Cert); ok {
 							columns = append(columns, fmt.Sprintf("%t", isRevoked))
 						} else {
 							columns = append(columns, "failed")
+						}
+						//running -=1
+						//fmt.Printf("Running Threads: %d \n", running)
+
+						if running == 0 {
+							test, ok  := <-results
+							if ok {
+								fmt.Printf("Got: '%#v' state: '%#v'\n", test, ok)
+								//close(results)
+							}
 						}
 					} else {
 						columns = append(columns, "")
@@ -344,7 +357,7 @@ func saveResults(filename string, include, revoked bool) error {
 					}
 
 				} else {
-					columns = []string{"", "", "", "", "", "", "", "",strings.ToUpper(e.Priority().String()), e.Error(), "", r.Pem}
+					columns = []string{fmt.Sprintf("%d",counter), "", "", "", "", "", "", "",strings.ToUpper(e.Priority().String()), e.Error(), "", r.Pem}
 				}
 
 				err := writer.Write(columns)
@@ -356,7 +369,14 @@ func saveResults(filename string, include, revoked bool) error {
 				writer.Flush()
 			}
 			counter++
-			if running == 0 { close(results)}
+
+			if running == 0 {
+				//val, ok := <-results
+				//fmt.Printf("Got: '%#v' state: '%#v'\n", val, ok)
+				//if ok {
+					//if !revoked {close(results)}
+				//}
+			}
 		} else {
 			break
 		}
